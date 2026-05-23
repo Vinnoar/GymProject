@@ -1,145 +1,128 @@
+#pragma once
 #include <iostream>
 #include <string>
-#include <vector>
 #include "user.h"
 
 using namespace std;
 
-class Membership {
-<<<<<<< HEAD
-    string type;
+class MembershipRecord {
+protected:
+    int    membershipId;
+    int    userId;
+    char   membershipType[10]; // "Basic", "Premium", "VIP"
     double price;
-    vector<string> features;
+    bool   isActive;
+    int    daysRemaining;
 
-=======
->>>>>>> origin/main
-    private:
-        string membershipId;
-        string userId;
-        string membershipType; // "Basic", "Premium", "VIP"
-<<<<<<< HEAD
-        string startDate;
-        string endDate;
-=======
->>>>>>> origin/main
-        double price;
-        bool isActive;
-        int daysRemaining;
-    public:
-<<<<<<< HEAD
-    Membership(string t, double p, vector<string> f) : type(t), price(p), features(f) {}
-    Membership(string t, string sid, double p, string s, string e) : membershipType(t), userId(sid), price(p), startDate(s), endDate(e), isActive(false), daysRemaining(0) {}
-
-=======
-    Membership(string t, string sid, double p, string s, string e) : membershipType(t), userId(sid), price(p), isActive(false), daysRemaining(0) {}
-    
->>>>>>> origin/main
-    void setMembershipId(string id) {
-        membershipId = id;
-    }
-    string getMembershipId() {
-        return membershipId;
+public:
+    MembershipRecord()
+        : membershipId(0), userId(0), price(0.0),
+          isActive(false), daysRemaining(0)
+    {
+        membershipType[0] = '\0';
     }
 
-    string getUserId() {
-        return userId;
+    MembershipRecord(int mid, int uid, const string& type, double p, bool active, int days)
+        : membershipId(mid), userId(uid), price(p),
+          isActive(active), daysRemaining(days)
+    {
+        int len = min((int)type.size(), 9);
+        for (int i = 0; i < len; i++) membershipType[i] = type[i];
+        membershipType[len] = '\0';
+    }
+};
+
+class Membership : public MembershipRecord {
+private:
+    void setMembershipTypeInternal(const string& type) {
+        int len = min((int)type.size(), 9);
+        for (int i = 0; i < len; i++) membershipType[i] = type[i];
+        membershipType[len] = '\0';
     }
 
-    void setMembershipType(string type) {
+public:
+    Membership() = default;
+
+    explicit Membership(const MembershipRecord& r) : MembershipRecord(r) {}
+
+    Membership(int mid, int uid) {
+        membershipId = mid;
+        userId       = uid;
+    }
+
+    // --- Getters ---
+    int    getMembershipId()   const { return membershipId; }
+    int    getUserId()         const { return userId; }
+    string getMembershipType() const { return membershipType; }
+    double getPrice()          const { return price; }
+    bool   getIsActive()       const { return isActive; }
+    int    getDaysRemaining()  const { return daysRemaining; }
+
+    // --- Setters ---
+    void setMembershipId(int id) { membershipId = id; }
+    void setUserId(int uid)      { userId = uid; }
+
+    void setMembershipType(const string& type) {
         if (type == "Basic" || type == "Premium" || type == "VIP") {
-            membershipType = type;
+            setMembershipTypeInternal(type);
         } else {
-            cout << "Invalid membership type. Setting to Basic by default." << endl;
-            membershipType = "Basic";
+            cout << "Invalid type. Defaulting to Basic." << endl;
+            setMembershipTypeInternal("Basic");
         }
     }
 
-    string getType() {
-<<<<<<< HEAD
-        return type;
-        return membershipType;
-    }
-    // Getters and setters for startDate and endDate
-    void setStartDate(string s) {
-        startDate = s;
-    }
-    string getStartDate() {
-        return startDate;
-    }
-    void setEndDate(string e) {
-        endDate = e;
-    }
-    string getEndDate() {
-        return endDate;
-    }
-=======
-        return membershipType;
-    }
->>>>>>> origin/main
-
-    double getPrice() {
-        return price;
-    }
-
-<<<<<<< HEAD
-    void MembershipManager()
-=======
->>>>>>> origin/main
-    void subscribe(string uid, string type, int durationMonths){
-        userId = uid;
-        setMembershipType(type);
-        price = calculatePrice(type, durationMonths);
-        isActive = true;
-        // Set startDate and endDate based on current date and duration
-<<<<<<< HEAD
-    };
-    bool checkValidity() const;
-=======
-        daysRemaining = durationMonth*30;
-    };
-    bool checkValidity() const{
-        if isActive{
-            return true;
-        }
-        else return false;
-    };
->>>>>>> origin/main
-
-    double calculatePrice(string type, int durationMonths) {
+    static double calculatePrice(const string& type, int durationMonths) {
         double basePrice = 0.0;
-        if (type == "Basic") {
+
+        if      (type == "Basic")   basePrice = 30.0;
+        else if (type == "Premium") basePrice = 50.0;
+        else if (type == "VIP")     basePrice = 80.0;
+        else {
+            cout << "Unknown membership type. Using Basic price." << endl;
             basePrice = 30.0;
-        } else if (type == "Premium") {
-            basePrice = 50.0;
-        } else if (type == "VIP") {
-            basePrice = 80.0;
         }
 
         return basePrice * durationMonths;
     }
-    void display(){
-<<<<<<< HEAD
-        cout << "Membership Type: " << type << endl;
-        cout << "Membership Type: " << membershipType << endl;
-        cout << "Price: $" << price << endl;
-        cout << "Features: " << endl;
-        for (const auto& feature : features) {
-            cout << "- " << feature << endl;
+
+    void subscribe(const string& type, int durationMonths) {
+        setMembershipType(type);
+        price         = calculatePrice(type, durationMonths);
+        isActive      = true;
+        daysRemaining = durationMonths * 30;
+    }
+
+    void countdown() {
+        if (!isActive || daysRemaining <= 0) return;
+
+        daysRemaining--;
+
+        if (daysRemaining == 0) {
+            isActive = false;
+            cout << "Your membership has expired." << endl;
         }
-        cout << "Start Date: " << startDate << endl;
-        cout << "End Date: " << endDate << endl;
-        cout << "Status: " << (isActive ? "Active" : "Inactive") << endl;
     }
 
-    
-
-}
-=======
-        cout << "Membership Type: " << membershipType << endl;
-        cout << "Price: $" << price << endl;
-        cout << "Status: " << (isActive ? "Active" : "Inactive") << endl;
-        cout << "Days Remaining: " << daysRemaining << endl;
+    bool checkValidity() const {
+        if (isActive && daysRemaining > 0) {
+            cout << "Your membership is valid for "
+                 << daysRemaining << " more days." << endl;
+            return true;
+        }
+        return false;
+    }
+//in advance:
+    void cancelMembership() {
+        isActive      = false;
+        daysRemaining = 0;
     }
 
-}
->>>>>>> origin/main
+    void display() const {
+        cout << "Membership ID:  " << membershipId                       << "\n"
+             << "User ID:        " << userId                             << "\n"
+             << "Type:           " << membershipType                     << "\n"
+             << "Price:          $" << price                             << "\n"
+             << "Status:         " << (isActive ? "Active" : "Inactive") << "\n"
+             << "Days Remaining: " << daysRemaining                      << "\n";
+    }
+};
