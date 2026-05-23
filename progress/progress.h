@@ -2,8 +2,11 @@
 #include <string>
 #include "user.h"
 
+<<<<<<< HEAD
 using namespace std;
 
+=======
+>>>>>>> origin/main
 class BodyMeasurements {
 private:
 double chest; // in cm
@@ -13,7 +16,23 @@ double biceps; // in cm
 double thighs; // in cm
 public:
 // Constructors
+<<<<<<< HEAD
 // getter-setter
+=======
+BodyMeasurements();
+BodyMeasurements(double c, double w, double h, double b, double t);
+// getter-setter
+double getChest() const;
+void setChest(double c);
+double getWaist() const;
+void setWaist(double w);
+double getHips() const;
+void setHips(double h);
+double getBiceps() const;
+void setBiceps(double b);
+double getThighs() const;
+void setThighs(double t);
+>>>>>>> origin/main
 // Display
 void displayMeasurements() const;
 };

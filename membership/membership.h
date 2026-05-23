@@ -6,23 +6,34 @@
 using namespace std;
 
 class Membership {
+<<<<<<< HEAD
     string type;
     double price;
     vector<string> features;
 
+=======
+>>>>>>> origin/main
     private:
         string membershipId;
         string userId;
         string membershipType; // "Basic", "Premium", "VIP"
+<<<<<<< HEAD
         string startDate;
         string endDate;
+=======
+>>>>>>> origin/main
         double price;
         bool isActive;
         int daysRemaining;
     public:
+<<<<<<< HEAD
     Membership(string t, double p, vector<string> f) : type(t), price(p), features(f) {}
     Membership(string t, string sid, double p, string s, string e) : membershipType(t), userId(sid), price(p), startDate(s), endDate(e), isActive(false), daysRemaining(0) {}
 
+=======
+    Membership(string t, string sid, double p, string s, string e) : membershipType(t), userId(sid), price(p), isActive(false), daysRemaining(0) {}
+    
+>>>>>>> origin/main
     void setMembershipId(string id) {
         membershipId = id;
     }
@@ -44,6 +55,7 @@ class Membership {
     }
 
     string getType() {
+<<<<<<< HEAD
         return type;
         return membershipType;
     }
@@ -60,20 +72,38 @@ class Membership {
     string getEndDate() {
         return endDate;
     }
+=======
+        return membershipType;
+    }
+>>>>>>> origin/main
 
     double getPrice() {
         return price;
     }
 
+<<<<<<< HEAD
     void MembershipManager()
+=======
+>>>>>>> origin/main
     void subscribe(string uid, string type, int durationMonths){
         userId = uid;
         setMembershipType(type);
         price = calculatePrice(type, durationMonths);
         isActive = true;
         // Set startDate and endDate based on current date and duration
+<<<<<<< HEAD
     };
     bool checkValidity() const;
+=======
+        daysRemaining = durationMonth*30;
+    };
+    bool checkValidity() const{
+        if isActive{
+            return true;
+        }
+        else return false;
+    };
+>>>>>>> origin/main
 
     double calculatePrice(string type, int durationMonths) {
         double basePrice = 0.0;
@@ -88,6 +118,7 @@ class Membership {
         return basePrice * durationMonths;
     }
     void display(){
+<<<<<<< HEAD
         cout << "Membership Type: " << type << endl;
         cout << "Membership Type: " << membershipType << endl;
         cout << "Price: $" << price << endl;
@@ -103,3 +134,12 @@ class Membership {
     
 
 }
+=======
+        cout << "Membership Type: " << membershipType << endl;
+        cout << "Price: $" << price << endl;
+        cout << "Status: " << (isActive ? "Active" : "Inactive") << endl;
+        cout << "Days Remaining: " << daysRemaining << endl;
+    }
+
+}
+>>>>>>> origin/main
